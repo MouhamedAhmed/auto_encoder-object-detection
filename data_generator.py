@@ -13,7 +13,7 @@ final_directory = os.path.join(current_directory, 'images')
 if not os.path.exists(final_directory):
     os.makedirs(final_directory)
 
-for i in range(64):
+for i in range(10000):
     # randomize background color
     r = random.randint(0,255)
     g = random.randint(0,255)

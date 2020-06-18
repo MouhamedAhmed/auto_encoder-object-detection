@@ -97,7 +97,6 @@ def convert_batch_to_tensors(batch):
     labels = np.asarray(labels)
     images = np.moveaxis(images, -1, 1)
     # labels = np.reshape(labels,(labels.shape[0],1))
-    print(labels.shape)
     images = torch.Tensor(images)
     labels = torch.LongTensor(labels).float()
     

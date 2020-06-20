@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from dataloader import *
 import json
 
+import skimage
 
 ###############
 # train iteration
@@ -47,7 +48,7 @@ def train(train_set, batch_size, model, cross_entropy_loss_criterion, optimizer,
         epoch_loss += cross_entropy_loss.item()
         
         i += 1        
-
+        # print("batch: ",i,"done")
         # Backward pass
         cross_entropy_loss.backward()
         optimizer.step()
@@ -131,8 +132,8 @@ def training_loop(model, cross_entropy_loss_criterion, batch_size, optimizer, ep
                   f'Valid loss: {valid_loss:.4f}\t'
                   )
 
-    plot_losses(train_losses, valid_losses)
-    
+    # plot_losses(train_losses, valid_losses)
+    heat_map (model,device)
     return model, optimizer, train_losses, valid_losses
 
 
@@ -192,4 +193,51 @@ def plot_losses(train_losses, valid_losses):
     
     # change the plot style to default
     plt.style.use('default')
+
+def heat_map (model,device):
+    # # generate img
+    # # randomize background color
+    # img_size = 256
+    # r = random.randint(0,255)
+    # g = random.randint(0,255)
+    # b = random.randint(0,255)
+    # back_color = [r,g,b]
+
+    # img = np.ones((img_size,img_size,3)).astype(int)*back_color
+
+    # # forground
+    # # randomize foreground color
+    # r = random.randint(0,255)
+    # g = random.randint(0,255)
+    # b = random.randint(0,255)
+    # fore_color = [r,g,b]
+    # # randomize center
+    # center_x = random.randint(img_size//8,(7 * img_size)//8)
+    # center_y = random.randint(img_size//8,(7 * img_size)//8)
+    # radius = random.randint(img_size//10,np.min([img_size - 1 - center_x, img_size - 1 - center_y, center_x, center_y]))
+
+    # rr,cc = skimage.draw.circle(center_x, center_y, radius)
+    # img[rr,cc] = fore_color
+
+    img = np.array(plt.imread("images/4998.jpg"))
+    imgs = []
+    imgs.append(img)
+    imgs = np.moveaxis(imgs, -1, 1)
+    # imgs = torch.Tensor(imgs)
+
+    t = torch.from_numpy(imgs)
+    t = t.to(device)
+    # t = t.type(torch.DoubleTensor)
+    # print(t)
+    model = model.float()
+    u = model(t.float())
+    h1 = u[0][0].cpu().detach().numpy()
+    h2 = u[0][1].cpu().detach().numpy()
     
+    
+    plt.imshow(img)
+    plt.show()
+    plt.imshow(h1)
+    plt.show()
+    plt.imshow(h2)
+    plt.show()

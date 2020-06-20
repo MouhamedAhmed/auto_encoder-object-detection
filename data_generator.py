@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import os
 import csv
 
-img_size = 64
+img_size = 256
 # create the directory of images
 current_directory = os.getcwd()
 final_directory = os.path.join(current_directory, 'images')

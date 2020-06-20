@@ -10,7 +10,7 @@ class Interpolate(nn.Module):
         self.interp = nn.functional.interpolate
         
     def forward(self, x):
-        x = self.interp(x, mode='bilinear', scale_factor=2)
+        x = self.interp(x, mode='bilinear', scale_factor=2,align_corners=True)
         return x
 
 
@@ -76,7 +76,7 @@ class Autoencoder(nn.Module):
         return x
 
 # m = Autoencoder()
-# i = np.zeros((1,3,256,256))
+# i = np.zeros((16,3,256,256))
 # t = torch.from_numpy(i)
 # # t = t.type(torch.DoubleTensor)
 # # print(t)

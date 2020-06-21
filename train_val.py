@@ -26,20 +26,10 @@ def train(train_set, batch_size, model, cross_entropy_loss_criterion, optimizer,
 
     l = len(train_set)/batch_size
     i = 0
-    batch = train_set[0]
-    path = batch["path"]
-    # load the image
-    image = Image.open(path)
-    image = np.asarray(image)
-    d = {
-        "path": batch["path"],
-        "image": image,
-        "label": batch["label"]
-    }
-    batch = [d]
+
     while len(train_set)>0:
          # get batch
-        # batch = get_batch(train_set,batch_size)
+        batch = get_batch(train_set,batch_size)
         normalize_batch(batch)
         X, y_true = convert_batch_to_tensors(batch)
         X = X.to(device)
@@ -229,7 +219,7 @@ def heat_map (model,device):
     # rr,cc = skimage.draw.circle(center_x, center_y, radius)
     # img[rr,cc] = fore_color
 
-    img = np.array(plt.imread("images/4999.jpg"))
+    img = np.array(plt.imread("images/0.jpg"))
     imgs = []
     imgs.append(img)
     imgs = np.moveaxis(imgs, -1, 1)
@@ -251,3 +241,24 @@ def heat_map (model,device):
     plt.show()
     plt.imshow(h2)
     plt.show()
+
+    with open('bb.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            path = row[0]
+            x1 = int(row[1])
+            y1 = int(row[2])
+            x2 = int(row[3])
+            y2 = int(row[4])
+            img1 = np.zeros((256,256))
+            img1[x1][y1] = 1.0
+            img2 = np.zeros((256,256))
+            img2[x2][y2] = 1.0
+            label = np.zeros((2,256,256))
+            label[0] = img1
+            label[1] = img2
+            plt.imshow(img1)
+            plt.show()
+            plt.imshow(img2)
+            plt.show()
+            break

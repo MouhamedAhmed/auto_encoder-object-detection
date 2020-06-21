@@ -26,10 +26,20 @@ def train(train_set, batch_size, model, cross_entropy_loss_criterion, optimizer,
 
     l = len(train_set)/batch_size
     i = 0
-
+    batch = train_set[0]
+    path = batch["path"]
+    # load the image
+    image = Image.open(path)
+    image = np.asarray(image)
+    d = {
+        "path": batch["path"],
+        "image": image,
+        "label": batch["label"]
+    }
+    batch = [d]
     while len(train_set)>0:
          # get batch
-        batch = get_batch(train_set,batch_size)
+        # batch = get_batch(train_set,batch_size)
         normalize_batch(batch)
         X, y_true = convert_batch_to_tensors(batch)
         X = X.to(device)
@@ -219,7 +229,7 @@ def heat_map (model,device):
     # rr,cc = skimage.draw.circle(center_x, center_y, radius)
     # img[rr,cc] = fore_color
 
-    img = np.array(plt.imread("images/4998.jpg"))
+    img = np.array(plt.imread("images/4999.jpg"))
     imgs = []
     imgs.append(img)
     imgs = np.moveaxis(imgs, -1, 1)

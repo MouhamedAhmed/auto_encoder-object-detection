@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 # import torch.nn.Interpolate as Interpolate
 import numpy as np
+from CornerPooling import *
 
 class Interpolate(nn.Module):
     def __init__(self):
@@ -72,14 +73,33 @@ class Autoencoder(nn.Module):
     def forward(self,x):
         x = self.encoder(x)
         x = self.decoder(x)
-        x = self.sig(x)
+        # x = self.sig(x)
         return x
 
-# m = Autoencoder()
-# i = np.zeros((16,3,256,256))
-# t = torch.from_numpy(i)
-# # t = t.type(torch.DoubleTensor)
-# # print(t)
-# m = m.float()
-# u = m(t.float())
-# print(u.size())
+
+class model(nn.Module):    
+    def __init__(self):
+        super(model,self).__init__()
+        self.BackBone = Autoencoder()
+        self.TopLeftCornerPooling = CornerPooling(0)
+        self.BottomRightCornerPooling = CornerPooling(1)
+        
+    def forward(self,x):
+        x = self.BackBone(x)
+        tl = x[:,0,:,:]
+        br = x[:,1,:,:]
+        tl = torch.reshape(tl, (tl.size()[0], 1, tl.size()[1], tl.size()[2]))
+        br = torch.reshape(br, (br.size()[0], 1, br.size()[1], br.size()[2]))
+        print(br.size())
+        tl = self.TopLeftCornerPooling(tl)
+        br = self.BottomRightCornerPooling(br)
+
+        return tl,br    
+m = model()
+i = np.random.rand(16,3,256,256)
+t = torch.from_numpy(i)
+# t = t.type(torch.DoubleTensor)
+# print(t)
+m = m.float()
+u,_ = m(t.float())
+print(u.size())

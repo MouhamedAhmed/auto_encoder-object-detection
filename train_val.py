@@ -34,7 +34,8 @@ def train(train_set, batch_size, model, cross_entropy_loss_criterion, optimizer,
         X, y_true = convert_batch_to_tensors(batch)
         X = X.to(device)
         y_true = y_true.to(device)
-        
+        print(X.size())
+        print(y_true.size())
 
         optimizer.zero_grad()
 
@@ -155,7 +156,6 @@ def get_accuracy(model, dataset,batch_size, device):
             batch = get_batch(dataset,batch_size)
             normalize_batch(batch)
             X, y_true= convert_batch_to_tensors(batch)
-
             X = X.to(device)
             y_true = y_true.to(device)
             

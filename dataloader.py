@@ -32,12 +32,12 @@ def load_data():
             }
             dataset.append(entry)
 
-    training = dataset[0:int(0.8*len(dataset))]
-    validation = dataset[int(0.8*len(dataset)):int(0.9*len(dataset))]
-    testing = dataset[int(0.9*len(dataset)):len(dataset)]
-    # training = [dataset[0]]
-    # validation = [dataset[0]]
-    # testing = [dataset[0]]
+    # training = dataset[0:int(0.8*len(dataset))]
+    # validation = dataset[int(0.8*len(dataset)):int(0.9*len(dataset))]
+    # testing = dataset[int(0.9*len(dataset)):len(dataset)]
+    training = [dataset[0]]
+    validation = [dataset[0]]
+    testing = [dataset[0]]
     return training,validation,testing
 
 

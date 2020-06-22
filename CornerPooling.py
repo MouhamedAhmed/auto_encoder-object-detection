@@ -37,6 +37,7 @@ class DownUpMaxPooling(nn.Module):
                         m = e
                     else:
                         x[b][0][j][i] = m
+        
         return x  
 
 class LeftRightMaxPooling(nn.Module):    
@@ -134,10 +135,10 @@ class CornerPooling(nn.Module):
         return out
 
 # i = np.zeros((2,1,256,256))
-# i = np.random.rand(2,1,3,3)
-# j = np.random.rand(2,1,3,3)
-# t = torch.from_numpy(i).float()
-# g = torch.from_numpy(j).float()
+i = np.random.rand(16,1,50,50)
+j = np.random.rand(2,1,3,3)
+t = torch.from_numpy(i).float()
+g = torch.from_numpy(j).float()
 # print(t)
-# m = CornerPooling(0).float()
-# print(m(t))
+m = CornerPooling(0).float()
+print(m(t))

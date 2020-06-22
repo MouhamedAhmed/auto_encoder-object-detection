@@ -94,10 +94,10 @@ class model(nn.Module):
         tl = self.TopLeftCornerPooling(tl)
         br = self.BottomRightCornerPooling(br)
 
-        return tl,br    
-m = model()
+        return tl,br
+m = model().to('cuda')
 i = np.random.rand(16,3,256,256)
-t = torch.from_numpy(i)
+t = torch.from_numpy(i).to('cuda')
 # t = t.type(torch.DoubleTensor)
 # print(t)
 m = m.float()

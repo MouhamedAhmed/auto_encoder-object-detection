@@ -49,7 +49,7 @@ def train(train_set, batch_size, model, cross_entropy_loss_criterion, optimizer,
         epoch_loss += cross_entropy_loss.item()
         
         i += 1        
-        # print("batch: ",i,"done")
+        print("batch: ",i,"done")
         # Backward pass
         cross_entropy_loss.backward()
         optimizer.step()

@@ -10,16 +10,11 @@ class UpDownMaxPooling(nn.Module):
         super(UpDownMaxPooling,self).__init__()
     
     def forward(self,x):
-        for b in range(x.size()[0]):
-            for i in range(x.size()[3]):
-                # first elemnt in the column
-                m = x[b][0][0][i]
-                for j in range(x.size()[2]):
-                    e = x[b][0][j][i]
-                    if e > m:
-                        m = e
-                    else:
-                        x[b][0][j][i] = m
+        for i in range(1,x.size()[2]):
+            # i is a row
+            row = x[:,0,i,:]
+            bef_row = x[:,0,i-1,:]
+            x[:,0,i,:] = torch.max(row,bef_row)
         return x  
 
 class DownUpMaxPooling(nn.Module):    
@@ -27,17 +22,11 @@ class DownUpMaxPooling(nn.Module):
         super(DownUpMaxPooling,self).__init__()
     
     def forward(self,x):
-        for b in range(x.size()[0]):
-            for i in range(x.size()[3]):
-                # last element in the column
-                m = x[b][0][x.size()[2]-1][i]
-                for j in range(x.size()[2]-1,-1,-1):
-                    e = x[b][0][j][i]
-                    if e > m:
-                        m = e
-                    else:
-                        x[b][0][j][i] = m
-        
+        for i in range(x.size()[2]-2,-1,-1):
+            # i is a row
+            row = x[:,0,i,:]
+            aft_row = x[:,0,i+1,:]
+            x[:,0,i,:] = torch.max(row,aft_row)
         return x  
 
 class LeftRightMaxPooling(nn.Module):    
@@ -45,16 +34,11 @@ class LeftRightMaxPooling(nn.Module):
         super(LeftRightMaxPooling,self).__init__()
     
     def forward(self,x):
-        for b in range(x.size()[0]):
-            for i in range(x.size()[2]):
-                # first elemnt in the row
-                m = x[b][0][i][0]
-                for j in range(x.size()[3]):
-                    e = x[b][0][i][j]
-                    if e > m:
-                        m = e
-                    else:
-                        x[b][0][i][j] = m
+        for i in range(1,x.size()[3]):
+            # i is a column
+            col = x[:,0,:,i]
+            bef_col = x[:,0,:,i-1]
+            x[:,0,:,i] = torch.max(col,bef_col)
         return x 
 
 
@@ -63,16 +47,11 @@ class RightLeftMaxPooling(nn.Module):
         super(RightLeftMaxPooling,self).__init__()
     
     def forward(self,x):
-        for b in range(x.size()[0]):
-            for i in range(x.size()[2]):
-                # last elemnt in the row
-                m = x[b][0][i][x.size()[2]-1]
-                for j in range(x.size()[3]-1,-1,-1):
-                    e = x[b][0][i][j]
-                    if e > m:
-                        m = e
-                    else:
-                        x[b][0][i][j] = m
+        for i in range(x.size()[3]-2,-1,-1):
+            # i is a column
+            col = x[:,0,:,i]
+            aft_col = x[:,0,:,i+1]
+            x[:,0,:,i] = torch.max(col,aft_col)
         return x 
 
 class CornerPooling(nn.Module):    
@@ -135,10 +114,13 @@ class CornerPooling(nn.Module):
         return out
 
 # i = np.zeros((2,1,256,256))
-i = np.random.rand(16,1,50,50)
-j = np.random.rand(2,1,3,3)
-t = torch.from_numpy(i).float()
-g = torch.from_numpy(j).float()
+# i = np.random.rand(32,1,256,256)
+# j = np.random.rand(2,1,3,3)
+# t = torch.from_numpy(i).float().to('cuda')
+# g = torch.from_numpy(j).float().to('cuda')
+# # print(t)
+# m = CornerPooling(0).float().to('cuda')
+# # m = DownUpMaxPooling().float().to('cuda')
+
 # print(t)
-m = CornerPooling(0).float()
-print(m(t))
+# print(m(t))

@@ -90,20 +90,20 @@ class model(nn.Module):
         br = x[:,1,:,:]
         tl = torch.reshape(tl, (tl.size()[0], 1, tl.size()[1], tl.size()[2]))
         br = torch.reshape(br, (br.size()[0], 1, br.size()[1], br.size()[2]))
-        print("done backbone")
+        # print("done backbone")
         tl = self.TopLeftCornerPooling(tl)
-        print("done topleft")
+        # print("done topleft")
         br = self.BottomRightCornerPooling(br)
-        print("done bottomright")
+        # print("done bottomright")
         out = torch.cat((tl, br), dim=1)
-
-
         return out
-m = model()
-i = np.random.rand(16,3,256,256)
-t = torch.from_numpy(i).to('cuda')
-# t = t.type(torch.DoubleTensor)
-# print(t)
-m = m.float().to('cuda')
-u = m(t.float())
-print(u.size())
+
+
+# m = model()
+# i = np.random.rand(16,3,256,256)
+# t = torch.from_numpy(i).to('cuda')
+# # t = t.type(torch.DoubleTensor)
+# # print(t)
+# m = m.float().to('cuda')
+# u = m(t.float())
+# print(u.size())
